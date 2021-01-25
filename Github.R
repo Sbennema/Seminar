@@ -172,14 +172,13 @@ Numb_ads_nl <- dim(ad_locations_nl)[1]
 
 end_train_nl <- ad_locations_nl$start[1] - 1
 start_train_nl <- 1
-#Regressors_model_nl <- Regressors_nl[start_train_nl:end_train_nl,2:5]
+Regressors_model_nl <- as.matrix(Regressors_nl[start_train_nl:end_train_nl,2:5])
 
 y_nl <- data_bayes_nl$visits_index[start_train_nl:end_train_nl]
-data_model <- Regressors_nl[Regressors_nl$time==start_train_nl:Regressors_nl$time==end_train_nl]
 #ss_nl <- AddLocalLinearTrend(list(),y_nl)
 ss_nl <- AddAr(list(),y_nl)
 ss_nl <- AddSeasonal(ss_nl,y_nl,nseasons=7,season.duration=day)
-model <- bsts(y_nl,state.specification = ss_nl,niter=300)
+model <- bsts(y_nl~Regressors_model_nl,state.specification = ss_nl,niter=300)
 
 f_horizon <- ad_locations_nl$end[1] - end_train_nl
 pred <- predict(model,horizon = f_horizon)

@@ -49,6 +49,12 @@ XVarsData <- function(data){
   }
   tog <- cbind(time,medians,averages,quart1,quart3)  #make dataframe of the variables combined
   tog_df <- as.data.frame(tog)
+  
+  tog_df$medians <- as.numeric(tog_df$medians)       #make the following variables numeric
+  tog_df$averages <- as.numeric(tog_df$averages)     #opposed to characters
+  tog_df$quart1 <- as.numeric(tog_df$quart1)
+  tog_df$quart3 <- as.numeric(tog_df$quart3)
+  
   return (tog_df)
 }
 

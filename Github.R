@@ -180,9 +180,11 @@ ss_nl <- AddAr(list(),y_nl)
 ss_nl <- AddSeasonal(ss_nl,y_nl,nseasons=7,season.duration=day)
 model <- bsts(y_nl~Regressors_model_nl,state.specification = ss_nl,niter=300)
 
+
+Regressors_pred_nl <- as.matrix(Regressors_nl[ad_locations_nl$start[1]:ad_locations_nl$end[1],2:5])
 f_horizon <- ad_locations_nl$end[1] - end_train_nl
-pred <- predict(model,horizon = f_horizon)
-lift <- data_nl$visits_index[ad_locations_nl$start[1]:ad_locations_nl$end[1]] - pred$mean
+pred <- predict(model,horizon = f_horizon,newdata = Regressors_pred_nl)
+lift <- data_nl$visits_index[ad_locations_nl$start[1]:ad_locations_nl$end[1]] - pred$mean 
 lift_tot <- sum(lift)
 print(lift_tot)
 
